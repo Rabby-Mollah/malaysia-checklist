@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malaysia Checklist for Kabbo</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    h2 {
+      background: #ff4444;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 22px;
+      margin-top: 0;
+      text-align: center;
+    }
+    .section, .sub-section {
+      margin-bottom: 20px;
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .section-header, .sub-section-header {
+      padding: 12px 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .section-content, .sub-section-content {
+      padding: 10px 16px;
+      display: none;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    li {
+      background: #fafafa;
+      padding: 10px;
+      margin-bottom: 6px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+    }
+    input[type="checkbox"] {
+      margin-right: 12px;
+      transform: scale(1.2);
+    }
+    .toggle-icon {
+      font-size: 18px;
+      transition: transform 0.2s ease;
+    }
+    .open .toggle-icon {
+      transform: rotate(90deg);
+    }
+    .food .section-header {
+      background-color: #6f4e37;
+      color: white;
+    }
+    .place .section-header {
+      background-color: #2e7d32;
+      color: white;
+    }
+    .footer {
+      text-align: center;
+      background: #003333;
+      color: #00ff99;
+      font-weight: bold;
+      padding: 30px 0;
+      font-size: 24px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .chart-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 20px auto;
+    }
+    .reset-button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .reset-button:hover {
+      background-color: #b71c1c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Kabbo's Malaysia Travel Checklist</h2>
+
+    <!-- Food Section -->
+    <div class="section food">
+      <div class="section-header" onclick="toggleSection(this)">
+        🇲🇾 Malay Dishes <span class="toggle-icon">▶</span>
+      </div>
+      <div class="section-content">
+        <ul>
+          <li><input type="checkbox">Nasi Lemak</li>
+          <li><input type="checkbox">Char Kway Teow</li>
+          <li><input type="checkbox">Roti Canai</li>
+          <li><input type="checkbox">Satay</li>
+          <li><input type="checkbox">Laksa</li>
+          <li><input type="checkbox">Hainanese Chicken Rice</li>
+          <li><input type="checkbox">Teh Tarik</li>
+          <li><input type="checkbox">Cendol</li>
+          <li><input type="checkbox">Nasi Kandar</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Places Section -->
+    <div class="section place">
+      <div class="section-header" onclick="toggleSection(this)">
+        🌏 Places to Visit in Malaysia <span class="toggle-icon">▶</span>
+      </div>
+      <div class="section-content">
+        <div class="sub-section"><div class="sub-section-header" onclick="toggleSection(this)">📍 Kuala Lumpur <span class="toggle-icon">▶</span></div><div class="sub-section-content"><ul><li><input type="checkbox">Petronas Twin Towers</li><li><input type="checkbox">Batu Caves</li><li><input type="checkbox">Bukit Bintang</li><li><input type="checkbox">KL Tower</li><li><input type="checkbox">Thean Hou Temple</li></ul></div></div>
+        <div class="sub-section"><div class="sub-section-header" onclick="toggleSection(this)">📍 Penang <span class="toggle-icon">▶</span></div><div class="sub-section-content"><ul><li><input type="checkbox">George Town</li><li><input type="checkbox">Kek Lok Si Temple</li><li><input type="checkbox">Penang Hill</li><li><input type="checkbox">Penang Street Food</li></ul></div></div>
+        <div class="sub-section"><div class="sub-section-header" onclick="toggleSection(this)">📍 Langkawi <span class="toggle-icon">▶</span></div><div class="sub-section-content"><ul><li><input type="checkbox">Langkawi Sky Bridge</li><li><input type="checkbox">Pantai Cenang</li><li><input type="checkbox">Island Hopping</li><li><input type="checkbox">Mangrove Tours</li></ul></div></div>
+        <div class="sub-section"><div class="sub-section-header" onclick="toggleSection(this)">📍 Cameron Highlands <span class="toggle-icon">▶</span></div><div class="sub-section-content"><ul><li><input type="checkbox">Tea Plantations</li><li><input type="checkbox">Strawberry Farms</li><li><input type="checkbox">Mossy Forest</li></ul></div></div>
+        <div class="sub-section"><div class="sub-section-header" onclick="toggleSection(this)">📍 Melaka <span class="toggle-icon">▶</span></div><div class="sub-section-content"><ul><li><input type="checkbox">Jonker Street</li><li><input type="checkbox">A Famosa</li><li><input type="checkbox">Melaka River Cruise</li></ul></div></div>
+        <div class="sub-section"><div class="sub-section-header" onclick="toggleSection(this)">📍 Genting Highlands <span class="toggle-icon">▶</span></div><div class="sub-section-content"><ul><li><input type="checkbox">SkyAvenue Mall</li><li><input type="checkbox">Indoor Theme Park</li><li><input type="checkbox">Casino de Genting</li></ul></div></div>
+        <div class="sub-section"><div class="sub-section-header" onclick="toggleSection(this)">📍 Sabah & Sarawak <span class="toggle-icon">▶</span></div><div class="sub-section-content"><ul><li><input type="checkbox">Mount Kinabalu</li><li><input type="checkbox">Kinabatangan River</li><li><input type="checkbox">Bako National Park</li></ul></div></div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="progressChart"></canvas>
+    </div>
+
+    <button class="reset-button" onclick="resetChecklist()">🔄 Reset Checklist</button>
+
+    <div class="footer">Love from your Rabby</div>
+  </div>
+
+  <script>
+    function toggleSection(header) {
+      const parent = header.parentElement;
+      const content = header.nextElementSibling;
+      const icon = header.querySelector('.toggle-icon');
+      const isOpen = parent.classList.contains('open');
+
+      if (parent.classList.contains('section')) {
+        document.querySelectorAll('.section').forEach(sec => {
+          sec.classList.remove('open');
+          sec.querySelector('.section-content').style.display = 'none';
+          sec.querySelector('.toggle-icon').textContent = '▶';
+        });
+      }
+
+      if (!isOpen) {
+        parent.classList.add('open');
+        content.style.display = 'block';
+        icon.textContent = '▼';
+      } else {
+        parent.classList.remove('open');
+        content.style.display = 'none';
+        icon.textContent = '▶';
+      }
+    }
+
+    function saveChecklist() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const state = {};
+      checkboxes.forEach((cb, i) => {
+        state[i] = cb.checked;
+      });
+      localStorage.setItem('checklistState', JSON.stringify(state));
+    }
+
+    function loadChecklist() {
+      const state = JSON.parse(localStorage.getItem('checklistState') || '{}');
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((cb, i) => {
+        cb.checked = !!state[i];
+      });
+    }
+
+    function resetChecklist() {
+      localStorage.removeItem('checklistState');
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      updateChart();
+    }
+
+    function updateChart() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const total = checkboxes.length;
+      const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+
+      const data = {
+        labels: ["Done", "Remaining"],
+        datasets: [{
+          data: [checked, total - checked],
+          backgroundColor: ["#2e7d32", "#ccc"],
+        }]
+      };
+
+      const config = {
+        type: 'pie',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: {
+              display: true,
+              text: `Checklist Completion: ${((checked / total) * 100).toFixed(1)}%`
+            }
+          }
+        }
+      };
+
+      const chartCanvas = document.getElementById('progressChart');
+      if (window.myChart) window.myChart.destroy();
+      window.myChart = new Chart(chartCanvas, config);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadChecklist();
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+          saveChecklist();
+          updateChart();
+        });
+      });
+      updateChart();
+    });
+  </script>
+</body>
+</html>
