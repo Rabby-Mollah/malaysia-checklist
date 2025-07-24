@@ -338,6 +338,10 @@
     <div class="chart-container">
       <canvas id="customChart"></canvas>
     </div>
+    <!-- New: Checked-by-Category Pie Chart -->
+    <div class="chart-container">
+      <canvas id="checkedByCategoryChart"></canvas>
+    </div>
 
     <button class="btn-reset" onclick="resetChecklist()">🔄 Reset All</button>
     <div class="footer">Love from your Rabby</div>
@@ -359,25 +363,13 @@
       const done = Array.from(boxes).filter(cb => cb.checked).length;
       const data = {
         labels: ['Done', 'Remaining'],
-        datasets: [{
-          data: [done, total - done],
-          backgroundColor: ['#2e7d32', '#cccccc']
-        }]
+        datasets: [{ data: [done, total - done], backgroundColor: ['#2e7d32', '#cccccc'] }]
       };
-      const cfg = {
-        type: 'pie',
-        data,
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: 'bottom' },
-            title: {
-              display: true,
-              text: `Checklist Progress: ${((done / total) * 100).toFixed(1)}%`
-            }
-          }
+      const cfg = { type: 'pie', data, options: { responsive: true, plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: `Checklist Progress: ${((done/total)*100).toFixed(1)}%` }
         }
-      };
+      }};
       const ctx = document.getElementById('progressChart');
       if (window.progressChart) window.progressChart.destroy();
       window.progressChart = new Chart(ctx, cfg);
@@ -388,25 +380,40 @@
       const p = document.querySelectorAll('#customPlaceList li').length;
       const data = {
         labels: ['Food Added', 'Places Added'],
-        datasets: [{
-          data: [f, p],
-          backgroundColor: ['#3498db', '#9b59b6']
-        }]
+        datasets: [{ data: [f, p], backgroundColor: ['#3498db', '#9b59b6'] }]
       };
-      const cfg = {
-        type: 'pie',
-        data,
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: 'bottom' },
-            title: { display: true, text: 'Custom Entries' }
-          }
+      const cfg = { type: 'pie', data, options: { responsive: true, plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: 'Custom Entries' }
         }
-      };
+      }};
       const ctx2 = document.getElementById('customChart');
       if (window.customChart) window.customChart.destroy();
       window.customChart = new Chart(ctx2, cfg);
+    }
+
+    // New: breakdown of checked items by category
+    function updateCheckedByCategoryChart() {
+      const foodChecked = Array.from(document.querySelectorAll('.food input[type="checkbox"]'))
+                              .filter(cb => cb.checked).length;
+      const placeChecked = Array.from(document.querySelectorAll('.place input[type="checkbox"]'))
+                               .filter(cb => cb.checked).length;
+      const customFoodChecked = Array.from(document.querySelectorAll('#customFoodList li input[type="checkbox"]'))
+                                     .filter(cb => cb.checked).length;
+      const customPlaceChecked = Array.from(document.querySelectorAll('#customPlaceList li input[type="checkbox"]'))
+                                      .filter(cb => cb.checked).length;
+      const data = {
+        labels: ['Food', 'Places', 'Custom Food', 'Custom Place'],
+        datasets: [{ data: [foodChecked, placeChecked, customFoodChecked, customPlaceChecked] }]
+      };
+      const cfg = { type: 'pie', data, options: { responsive: true, plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: 'Checked Items by Category' }
+        }
+      }};
+      const ctx3 = document.getElementById('checkedByCategoryChart');
+      if (window.checkedByCategoryChart) window.checkedByCategoryChart.destroy();
+      window.checkedByCategoryChart = new Chart(ctx3, cfg);
     }
 
     function attachCheckboxListener(cb) {
@@ -414,6 +421,7 @@
         saveChecklist();
         updateChart();
         updateCustomChart();
+        updateCheckedByCategoryChart(); // <— also refresh our new chart
       });
     }
 
@@ -429,6 +437,7 @@
       saveChecklist();
       updateChart();
       updateCustomChart();
+      updateCheckedByCategoryChart();
     }
 
     function addCustomPlace() {
@@ -443,6 +452,7 @@
       saveChecklist();
       updateChart();
       updateCustomChart();
+      updateCheckedByCategoryChart();
     }
 
     function saveChecklist() {
@@ -463,6 +473,7 @@
       localStorage.removeItem('malaysiaChecklist');
       updateChart();
       updateCustomChart();
+      updateCheckedByCategoryChart();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -473,6 +484,7 @@
       loadChecklist();
       updateChart();
       updateCustomChart();
+      updateCheckedByCategoryChart(); // <— initialize new chart
     });
   </script>
 </body>
