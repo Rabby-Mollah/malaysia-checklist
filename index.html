@@ -28,7 +28,7 @@
       text-align: center;
       margin: 0 0 16px;
     }
-    /* Summary bars */
+    /* Overall Progress Summary */
     .summary {
       margin-bottom: 24px;
     }
@@ -434,7 +434,7 @@
     function saveSectionColors() {
       const colors = {};
       document.querySelectorAll('.section').forEach(sec => {
-        const name = sec.dataset-section;
+        const name = sec.dataset.section;
         const picker = sec.querySelector('.color-picker');
         colors[name] = picker.value;
       });
@@ -443,7 +443,7 @@
     function loadSectionColors() {
       const stored = JSON.parse(localStorage.getItem('sectionColors') || '{}');
       document.querySelectorAll('.section').forEach(sec => {
-        const name = sec.dataset-section;
+        const name = sec.dataset.section;
         const picker = sec.querySelector('.color-picker');
         const col = stored[name] || '#3498db';
         picker.value = col;
@@ -476,13 +476,7 @@
       document.getElementById('placePercent').textContent = placePct + '%';
     }
 
-    // checkbox & custom-item logic
-    function attachCheckboxListener(cb) {
-      cb.addEventListener('change', () => {
-        saveChecklist();
-        updateSummary();
-      });
-    }
+    // add custom items
     function addCustomFood() {
       const v = document.getElementById('customFoodInput').value.trim();
       if (!v) return;
@@ -490,8 +484,6 @@
       const li = document.createElement('li');
       li.innerHTML = `<input type="checkbox"> ${v}`;
       ul.appendChild(li);
-      const cb = li.querySelector('input');
-      attachCheckboxListener(cb);
       document.getElementById('customFoodInput').value = '';
       saveChecklist();
       updateSummary();
@@ -503,8 +495,6 @@
       const li = document.createElement('li');
       li.innerHTML = `<input type="checkbox"> ${v}`;
       ul.appendChild(li);
-      const cb = li.querySelector('input');
-      attachCheckboxListener(cb);
       document.getElementById('customPlaceInput').value = '';
       saveChecklist();
       updateSummary();
@@ -531,9 +521,15 @@
     document.addEventListener('DOMContentLoaded', () => {
       loadChecklist();
       loadSectionColors();
-      document.querySelectorAll('input[type="checkbox"]').forEach(cb => attachCheckboxListener(cb));
       attachColorPickers();
       updateSummary();
+      // delegate checkbox changes for both existing and new items
+      document.querySelector('.container').addEventListener('change', e => {
+        if (e.target.matches('input[type="checkbox"]')) {
+          saveChecklist();
+          updateSummary();
+        }
+      });
     });
   </script>
 </body>
