@@ -28,45 +28,104 @@
       text-align: center;
       margin: 0 0 24px;
     }
-    .section, .sub-section {
-      margin-bottom: 20px; background: #fff;
-      border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    .section {
+      margin-bottom: 20px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       overflow: hidden;
+      border-left: 6px solid var(--section-color, #3498db);
     }
-    .section-header, .sub-section-header {
-      padding: 12px 16px; font-weight: 600;
-      cursor: pointer; border-bottom: 1px solid #e1e4e8;
-      display: flex; justify-content: space-between; align-items: center;
+    .section-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 1px solid #e1e4e8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background: #f7f7f7;
     }
-    .section-content, .sub-section-content {
-      padding: 12px 16px; display: none;
+    .section-header .toggle-icon {
+      margin-right: 8px;
     }
-    ul { list-style: none; padding: 0; margin: 0; }
+    .section-header input.color-picker {
+      width: 24px;
+      height: 24px;
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+    }
+    .section-content {
+      padding: 12px 16px;
+      display: none;
+    }
+    .sub-section {
+      margin-bottom: 20px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .sub-section-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 1px solid #e1e4e8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f7f7f7;
+    }
+    .sub-section-header .toggle-icon {
+      margin-right: 8px;
+    }
+    .sub-section-content {
+      padding: 12px 16px;
+      display: none;
+    }
+    ul {
+      list-style: none;
+      padding: 0; margin: 0;
+    }
     li {
       background: #fafafa;
       padding: 10px 12px;
       margin-bottom: 8px;
       border-radius: 4px;
-      display: flex; align-items: center;
+      display: flex;
+      align-items: center;
     }
-    li input[type="checkbox"] {
-      margin-right: 12px; transform: scale(1.1);
+    .section input[type="checkbox"] {
+      margin-right: 12px;
+      transform: scale(1.1);
+      accent-color: var(--section-color, #3498db);
     }
     button {
-      padding: 8px 14px; font-size: 14px;
-      border: none; border-radius: 4px; cursor: pointer;
+      padding: 8px 14px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
       margin-top: 8px;
     }
-    .add-btn { background-color: #3498db; color: #fff; }
+    .add-btn {
+      background-color: #3498db;
+      color: #fff;
+    }
     .btn-reset {
-      background-color: #e74c3c; color: #fff;
-      margin: 16px auto; display: block;
+      background-color: #e74c3c;
+      color: #fff;
+      margin: 16px auto;
+      display: block;
     }
     button:hover { opacity: 0.9; }
     .footer {
-      text-align: center; margin-top: 32px;
-      font-size: 14px; color: #777;
+      text-align: center;
+      margin-top: 32px;
+      font-size: 14px;
+      color: #777;
     }
     @media (max-width: 600px) {
       .container { margin: 20px 10px; }
@@ -79,15 +138,16 @@
     <h2>Kabbo's Malaysia Travel Checklist</h2>
 
     <!-- Food Section -->
-    <div class="section food">
+    <div class="section food" data-section="food">
       <div class="section-header" onclick="toggleSection(this)">
-        🍛 Traditional Malaysian Dishes <span class="toggle-icon">▶</span>
+        <span><span class="toggle-icon">▶</span>🍛 Traditional Malaysian Dishes</span>
+        <input type="color" class="color-picker" title="Pick section color" />
       </div>
       <div class="section-content">
         <!-- Malay Dishes -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🇲🇾 Malay Dishes <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🇲🇾 Malay Dishes</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -101,11 +161,10 @@
             </ul>
           </div>
         </div>
-
         <!-- Chinese Dishes -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🇨🇳 Chinese Dishes <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🇨🇳 Chinese Dishes</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -117,27 +176,25 @@
             </ul>
           </div>
         </div>
-
         <!-- Indian Dishes -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🇮🇳 Indian Dishes <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🇮🇳 Indian Dishes</span>
           </div>
           <div class="sub-section-content">
             <ul>
               <li><input type="checkbox">Roti Canai</li>
-              <li><input type=" checkbox">Nasi Kandar</li>
+              <li><input type="checkbox">Nasi Kandar</li>
               <li><input type="checkbox">Thosai (Dosa)</li>
               <li><input type="checkbox">Tandoori Chicken</li>
               <li><input type="checkbox">Murtabak</li>
             </ul>
           </div>
         </div>
-
         <!-- Street Food -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🍢 Street Food <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🍢 Street Food</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -149,11 +206,10 @@
             </ul>
           </div>
         </div>
-
         <!-- Drinks & Desserts -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🍹 Drinks & Desserts <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🍹 Drinks & Desserts</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -164,11 +220,10 @@
             </ul>
           </div>
         </div>
-
         <!-- Custom Foods -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            📝 Kabbos added food <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>📝 Kabbos added food</span>
           </div>
           <div class="sub-section-content">
             <ul id="customFoodList"></ul>
@@ -180,15 +235,16 @@
     </div>
 
     <!-- Places Section -->
-    <div class="section place">
+    <div class="section place" data-section="place">
       <div class="section-header" onclick="toggleSection(this)">
-        🌏 Places to Visit in Malaysia <span class="toggle-icon">▶</span>
+        <span><span class="toggle-icon">▶</span>🌏 Places to Visit in Malaysia</span>
+        <input type="color" class="color-picker" title="Pick section color" />
       </div>
       <div class="section-content">
         <!-- Kuala Lumpur -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            📍 Kuala Lumpur <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>📍 Kuala Lumpur</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -203,7 +259,7 @@
         <!-- Penang -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🎨 Penang <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🎨 Penang</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -218,7 +274,7 @@
         <!-- Langkawi -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🏖️ Langkawi <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🏖️ Langkawi</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -232,7 +288,7 @@
         <!-- Cameron Highlands -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🌄 Cameron Highlands <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🌄 Cameron Highlands</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -245,7 +301,7 @@
         <!-- Melaka -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🏰 Melaka <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🏰 Melaka</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -259,7 +315,7 @@
         <!-- Taman Negara -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🌳 Taman Negara <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🌳 Taman Negara</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -272,7 +328,7 @@
         <!-- Sabah -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🏔️ Sabah <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🏔️ Sabah</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -286,7 +342,7 @@
         <!-- Sarawak -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🌲 Sarawak <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🌲 Sarawak</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -299,7 +355,7 @@
         <!-- Off-the-Beaten-Path Islands -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            🏝️ Off-the-Beaten-Path Islands <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>🏝️ Off-the-Beaten-Path Islands</span>
           </div>
           <div class="sub-section-content">
             <ul>
@@ -312,7 +368,7 @@
         <!-- Custom Places -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
-            📝 Kabbos added place <span class="toggle-icon">▶</span>
+            <span><span class="toggle-icon">▶</span>📝 Kabbos added place</span>
           </div>
           <div class="sub-section-content">
             <ul id="customPlaceList"></ul>
@@ -328,67 +384,97 @@
   </div>
 
   <script>
+    // toggle open/close
     function toggleSection(header) {
-      const parent = header.parentElement;
+      const sec = header.parentElement;
       const content = header.nextElementSibling;
       const icon = header.querySelector('.toggle-icon');
-      const open = parent.classList.toggle('open');
+      const open = sec.classList.toggle('open');
       content.style.display = open ? 'block' : 'none';
       icon.textContent = open ? '▼' : '▶';
     }
 
-    function attachCheckboxListener(cb) {
-      cb.addEventListener('change', () => {
-        saveChecklist();
+    // save/load section colors
+    function saveSectionColors() {
+      const colors = {};
+      document.querySelectorAll('.section').forEach(sec => {
+        const name = sec.dataset.section;
+        const picker = sec.querySelector('.color-picker');
+        colors[name] = picker.value;
+      });
+      localStorage.setItem('sectionColors', JSON.stringify(colors));
+    }
+    function loadSectionColors() {
+      const stored = JSON.parse(localStorage.getItem('sectionColors') || '{}');
+      document.querySelectorAll('.section').forEach(sec => {
+        const name = sec.dataset.section;
+        const picker = sec.querySelector('.color-picker');
+        const col = stored[name] || '#3498db';
+        picker.value = col;
+        sec.style.setProperty('--section-color', col);
       });
     }
 
+    // attach color pickers
+    function attachColorPickers() {
+      document.querySelectorAll('.color-picker').forEach(picker => {
+        picker.addEventListener('input', () => {
+          const sec = picker.closest('.section');
+          sec.style.setProperty('--section-color', picker.value);
+          saveSectionColors();
+        });
+      });
+    }
+
+    // checkbox & custom-item logic
+    function attachCheckboxListener(cb) {
+      cb.addEventListener('change', saveChecklist);
+    }
     function addCustomFood() {
-      const val = document.getElementById('customFoodInput').value.trim();
-      if (!val) return;
+      const v = document.getElementById('customFoodInput').value.trim();
+      if (!v) return;
       const ul = document.getElementById('customFoodList');
       const li = document.createElement('li');
-      li.innerHTML = `<input type="checkbox"> ${val}`;
+      li.innerHTML = `<input type="checkbox"> ${v}`;
       ul.appendChild(li);
       attachCheckboxListener(li.querySelector('input'));
       document.getElementById('customFoodInput').value = '';
       saveChecklist();
     }
-
     function addCustomPlace() {
-      const val = document.getElementById('customPlaceInput').value.trim();
-      if (!val) return;
+      const v = document.getElementById('customPlaceInput').value.trim();
+      if (!v) return;
       const ul = document.getElementById('customPlaceList');
       const li = document.createElement('li');
-      li.innerHTML = `<input type="checkbox"> ${val}`;
+      li.innerHTML = `<input type="checkbox"> ${v}`;
       ul.appendChild(li);
       attachCheckboxListener(li.querySelector('input'));
       document.getElementById('customPlaceInput').value = '';
       saveChecklist();
     }
 
+    // save/load checklist state
     function saveChecklist() {
       const states = Array.from(document.querySelectorAll('input[type="checkbox"]'))
                           .map(cb => cb.checked);
       localStorage.setItem('malaysiaChecklist', JSON.stringify(states));
     }
-
     function loadChecklist() {
       const saved = JSON.parse(localStorage.getItem('malaysiaChecklist') || '[]');
       document.querySelectorAll('input[type="checkbox"]').forEach((cb,i) => {
         cb.checked = !!saved[i];
       });
     }
-
     function resetChecklist() {
       document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
       localStorage.removeItem('malaysiaChecklist');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('input[type="checkbox"]')
-              .forEach(cb => attachCheckboxListener(cb));
       loadChecklist();
+      loadSectionColors();
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => attachCheckboxListener(cb));
+      attachColorPickers();
     });
   </script>
 </body>
