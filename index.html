@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kabbo's Malaysia Travel Checklist</title>
-  <!-- Pin a stable Chart.js release -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
   <style>
     body {
       margin: 0; padding: 0;
@@ -54,12 +52,6 @@
     }
     li input[type="checkbox"] {
       margin-right: 12px; transform: scale(1.1);
-    }
-    .chart-container {
-      width: 100%; margin: 24px auto; text-align: center;
-    }
-    .chart-container canvas {
-      width: 100%; height: 300px;
     }
     button {
       padding: 8px 14px; font-size: 14px;
@@ -134,7 +126,7 @@
           <div class="sub-section-content">
             <ul>
               <li><input type="checkbox">Roti Canai</li>
-              <li><input type="checkbox">Nasi Kandar</li>
+              <li><input type=" checkbox">Nasi Kandar</li>
               <li><input type="checkbox">Thosai (Dosa)</li>
               <li><input type="checkbox">Tandoori Chicken</li>
               <li><input type="checkbox">Murtabak</li>
@@ -331,18 +323,6 @@
       </div>
     </div>
 
-    <!-- Charts -->
-    <div class="chart-container">
-      <canvas id="progressChart"></canvas>
-    </div>
-    <div class="chart-container">
-      <canvas id="customChart"></canvas>
-    </div>
-    <!-- New: Checked-by-Category Pie Chart -->
-    <div class="chart-container">
-      <canvas id="checkedByCategoryChart"></canvas>
-    </div>
-
     <button class="btn-reset" onclick="resetChecklist()">🔄 Reset All</button>
     <div class="footer">Love from your Rabby</div>
   </div>
@@ -357,71 +337,9 @@
       icon.textContent = open ? '▼' : '▶';
     }
 
-    function updateChart() {
-      const boxes = document.querySelectorAll('input[type="checkbox"]');
-      const total = boxes.length;
-      const done = Array.from(boxes).filter(cb => cb.checked).length;
-      const data = {
-        labels: ['Done', 'Remaining'],
-        datasets: [{ data: [done, total - done], backgroundColor: ['#2e7d32', '#cccccc'] }]
-      };
-      const cfg = { type: 'pie', data, options: { responsive: true, plugins: {
-          legend: { position: 'bottom' },
-          title: { display: true, text: `Checklist Progress: ${((done/total)*100).toFixed(1)}%` }
-        }
-      }};
-      const ctx = document.getElementById('progressChart');
-      if (window.progressChart) window.progressChart.destroy();
-      window.progressChart = new Chart(ctx, cfg);
-    }
-
-    function updateCustomChart() {
-      const f = document.querySelectorAll('#customFoodList li').length;
-      const p = document.querySelectorAll('#customPlaceList li').length;
-      const data = {
-        labels: ['Food Added', 'Places Added'],
-        datasets: [{ data: [f, p], backgroundColor: ['#3498db', '#9b59b6'] }]
-      };
-      const cfg = { type: 'pie', data, options: { responsive: true, plugins: {
-          legend: { position: 'bottom' },
-          title: { display: true, text: 'Custom Entries' }
-        }
-      }};
-      const ctx2 = document.getElementById('customChart');
-      if (window.customChart) window.customChart.destroy();
-      window.customChart = new Chart(ctx2, cfg);
-    }
-
-    // New: breakdown of checked items by category
-    function updateCheckedByCategoryChart() {
-      const foodChecked = Array.from(document.querySelectorAll('.food input[type="checkbox"]'))
-                              .filter(cb => cb.checked).length;
-      const placeChecked = Array.from(document.querySelectorAll('.place input[type="checkbox"]'))
-                               .filter(cb => cb.checked).length;
-      const customFoodChecked = Array.from(document.querySelectorAll('#customFoodList li input[type="checkbox"]'))
-                                     .filter(cb => cb.checked).length;
-      const customPlaceChecked = Array.from(document.querySelectorAll('#customPlaceList li input[type="checkbox"]'))
-                                      .filter(cb => cb.checked).length;
-      const data = {
-        labels: ['Food', 'Places', 'Custom Food', 'Custom Place'],
-        datasets: [{ data: [foodChecked, placeChecked, customFoodChecked, customPlaceChecked] }]
-      };
-      const cfg = { type: 'pie', data, options: { responsive: true, plugins: {
-          legend: { position: 'bottom' },
-          title: { display: true, text: 'Checked Items by Category' }
-        }
-      }};
-      const ctx3 = document.getElementById('checkedByCategoryChart');
-      if (window.checkedByCategoryChart) window.checkedByCategoryChart.destroy();
-      window.checkedByCategoryChart = new Chart(ctx3, cfg);
-    }
-
     function attachCheckboxListener(cb) {
       cb.addEventListener('change', () => {
         saveChecklist();
-        updateChart();
-        updateCustomChart();
-        updateCheckedByCategoryChart(); // <— also refresh our new chart
       });
     }
 
@@ -435,9 +353,6 @@
       attachCheckboxListener(li.querySelector('input'));
       document.getElementById('customFoodInput').value = '';
       saveChecklist();
-      updateChart();
-      updateCustomChart();
-      updateCheckedByCategoryChart();
     }
 
     function addCustomPlace() {
@@ -450,9 +365,6 @@
       attachCheckboxListener(li.querySelector('input'));
       document.getElementById('customPlaceInput').value = '';
       saveChecklist();
-      updateChart();
-      updateCustomChart();
-      updateCheckedByCategoryChart();
     }
 
     function saveChecklist() {
@@ -471,20 +383,12 @@
     function resetChecklist() {
       document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
       localStorage.removeItem('malaysiaChecklist');
-      updateChart();
-      updateCustomChart();
-      updateCheckedByCategoryChart();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // wire up existing checkboxes
       document.querySelectorAll('input[type="checkbox"]')
               .forEach(cb => attachCheckboxListener(cb));
-      // load saved state, then draw
       loadChecklist();
-      updateChart();
-      updateCustomChart();
-      updateCheckedByCategoryChart(); // <— initialize new chart
     });
   </script>
 </body>
