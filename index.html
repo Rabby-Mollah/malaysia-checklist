@@ -1,199 +1,501 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>🇲🇾 Malaysia Travel Checklist</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kabbo's Malaysia Travel Checklist</title>
+  <!-- Use a specific Chart.js version for stability -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 2rem;
-      background: #fdfdfd;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f0f2f5;
+      color: #333;
     }
-    h1, h2, h3 {
-      color: #00695c;
-    }
-    section {
-      margin-bottom: 2rem;
-    }
-    label {
-      display: block;
-      margin: 5px 0;
-    }
-    .subsection {
-      margin-left: 20px;
-      margin-top: 0.5rem;
-    }
-    .category {
-      background: #e0f2f1;
-      padding: 1rem;
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
       border-radius: 8px;
-      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      background: #34495e;
+      color: #fff;
+      padding: 16px;
+      border-radius: 6px;
+      font-size: 26px;
+      text-align: center;
+      margin: 0 0 24px;
+    }
+    .section, .sub-section {
+      margin-bottom: 20px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .section-header, .sub-section-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 1px solid #e1e4e8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f7f7f7;
+    }
+    .section-content, .sub-section-content {
+      padding: 12px 16px;
+      display: none;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      background: #fafafa;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+    }
+    li input[type="checkbox"] {
+      margin-right: 12px;
+      transform: scale(1.1);
+    }
+    .chart-container {
+      width: 100%;
+      margin: 24px auto;
+      text-align: center;
+    }
+    .chart-container canvas {
+      max-width: 100%;
+      height: 300px; /* ensure visible height */
+    }
+    button {
+      padding: 8px 14px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .add-btn {
+      background-color: #3498db;
+      color: #fff;
+    }
+    .btn-reset {
+      background-color: #e74c3c;
+      color: #fff;
+      margin: 16px auto;
+      display: block;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 14px;
+      color: #777;
+    }
+    @media (max-width: 600px) {
+      .container { margin: 20px 10px; }
+      h2 { font-size: 22px; }
     }
   </style>
 </head>
 <body>
-  <h1>🇲🇾 Malaysia Travel Checklist</h1>
-  <div id="checklist"></div>
+  <div class="container">
+    <h2>Kabbo's Malaysia Travel Checklist</h2>
 
-  <!-- Firebase Scripts -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getDatabase, ref, onValue, set, update } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+    <!-- Food Section -->
+    <div class="section food">
+      <div class="section-header" onclick="toggleSection(this)">
+        🍛 Traditional Malaysian Dishes <span class="toggle-icon">▶</span>
+      </div>
+      <div class="section-content">
+        <!-- Malay Dishes -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🇲🇾 Malay Dishes <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Nasi Lemak</li>
+              <li><input type="checkbox">Rendang</li>
+              <li><input type="checkbox">Satay</li>
+              <li><input type="checkbox">Laksa (Asam/Curry)</li>
+              <li><input type="checkbox">Nasi Kerabu</li>
+              <li><input type="checkbox">Ayam Percik</li>
+              <li><input type="checkbox">Ikan Bakar</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Chinese Dishes -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🇨🇳 Chinese Dishes <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Char Kway Teow</li>
+              <li><input type="checkbox">Hokkien Mee</li>
+              <li><input type="checkbox">Chee Cheong Fun</li>
+              <li><input type="checkbox">Yong Tau Foo</li>
+              <li><input type="checkbox">Bak Kut Teh</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Indian Dishes -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🇮🇳 Indian Dishes <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Roti Canai</li>
+              <li><input type="checkbox">Nasi Kandar</li>
+              <li><input type="checkbox">Thosai (Dosa)</li>
+              <li><input type="checkbox">Tandoori Chicken</li>
+              <li><input type="checkbox">Murtabak</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Street Food -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🍢 Street Food <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Apam Balik</li>
+              <li><input type="checkbox">Cendol</li>
+              <li><input type="checkbox">Rojak</li>
+              <li><input type="checkbox">Lok Lok</li>
+              <li><input type="checkbox">Keropok Lekor</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Drinks & Desserts -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🍹 Drinks & Desserts <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Teh Tarik</li>
+              <li><input type="checkbox">Milo Dinosaur</li>
+              <li><input type="checkbox">ABC (Ais Batu Campur)</li>
+              <li><input type="checkbox">Kuih-muih</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Custom Foods -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            📝 Kabbos added food <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul id="customFoodList"></ul>
+            <input type="text" id="customFoodInput" placeholder="Add custom food" />
+            <button class="add-btn" onclick="addCustomFood()">Add Food</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAHmfhuVUXQmSlUn4UP2Q9wzNdbg-OOHs4",
-      authDomain: "malaysiachecklist.firebaseapp.com",
-      projectId: "malaysiachecklist",
-      storageBucket: "malaysiachecklist.firebasestorage.app",
-      messagingSenderId: "962444265039",
-      appId: "1:962444265039:web:f85506e13848ba8e278c3a",
-      measurementId: "G-Q0CFSCM88W",
-      databaseURL: "https://malaysiachecklist-default-rtdb.asia-southeast1.firebasedatabase.app"
-    };
+    <!-- Places Section -->
+    <div class="section place">
+      <div class="section-header" onclick="toggleSection(this)">
+        🌏 Places to Visit in Malaysia <span class="toggle-icon">▶</span>
+      </div>
+      <div class="section-content">
+        <!-- Kuala Lumpur -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            📍 Kuala Lumpur <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Petronas Twin Towers</li>
+              <li><input type="checkbox">Batu Caves</li>
+              <li><input type="checkbox">KL Tower</li>
+              <li><input type="checkbox">Bukit Bintang</li>
+              <li><input type="checkbox">Chinatown (Petaling Street)</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Penang -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🎨 Penang <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">George Town</li>
+              <li><input type="checkbox">Kek Lok Si Temple</li>
+              <li><input type="checkbox">Penang Hill</li>
+              <li><input type="checkbox">Gurney Drive</li>
+              <li><input type="checkbox">Penang Street Food</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Langkawi -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🏖️ Langkawi <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Langkawi Sky Bridge</li>
+              <li><input type="checkbox">Pantai Cenang</li>
+              <li><input type="checkbox">Island Hopping</li>
+              <li><input type="checkbox">Langkawi Cable Car</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Cameron Highlands -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🌄 Cameron Highlands <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Tea Plantations</li>
+              <li><input type="checkbox">Strawberry Farms</li>
+              <li><input type="checkbox">Mossy Forest</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Melaka -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🏰 Melaka <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Jonker Street</li>
+              <li><input type="checkbox">St. Paul's Hill</li>
+              <li><input type="checkbox">Dutch Square</li>
+              <li><input type="checkbox">Melaka River Cruise</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Taman Negara -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🌳 Taman Negara <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Canopy Walkway</li>
+              <li><input type="checkbox">Night Jungle Walk</li>
+              <li><input type="checkbox">Orang Asli Village</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Sabah -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🏔️ Sabah <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Mount Kinabalu</li>
+              <li><input type="checkbox">Kota Kinabalu</li>
+              <li><input type="checkbox">Sipadan Island</li>
+              <li><input type="checkbox">Kinabatangan River</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Sarawak -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🌲 Sarawak <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Kuching</li>
+              <li><input type="checkbox">Bako National Park</li>
+              <li><input type="checkbox">Semenggoh Wildlife Centre</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Off-the-Beaten-Path Islands -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            🏝️ Off-the-Beaten-Path Islands <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul>
+              <li><input type="checkbox">Perhentian Islands</li>
+              <li><input type="checkbox">Tioman Island</li>
+              <li><input type="checkbox">Redang Island</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Custom Places -->
+        <div class="sub-section">
+          <div class="sub-section-header" onclick="toggleSection(this)">
+            📝 Kabbos added place <span class="toggle-icon">▶</span>
+          </div>
+          <div class="sub-section-content">
+            <ul id="customPlaceList"></ul>
+            <input type="text" id="customPlaceInput" placeholder="Add custom place" />
+            <button class="add-btn" onclick="addCustomPlace()">Add Place</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    <!-- Charts -->
+    <div class="chart-container">
+      <canvas id="progressChart"></canvas>
+    </div>  
+    <div class="chart-container">
+      <canvas id="customChart"></canvas>
+    </div>
 
-    const userId = "demo-user"; // Change to unique ID if needed
-    const checklistContainer = document.getElementById('checklist');
+    <button class="btn-reset" onclick="resetChecklist()">🔄 Reset All</button>
+    <div class="footer">Love from your Rabby</div>
+  </div>
 
-    const checklistData = {
-      "🍛 Top Traditional Malaysian Dishes": {
-        "🇲🇾 Malay Dishes": [
-          "Nasi Lemak",
-          "Rendang",
-          "Satay",
-          "Laksa: Penang Asam Laksa",
-          "Laksa: Curry Laksa",
-          "Nasi Kerabu"
-        ],
-        "🇨🇳 Chinese-Malaysian Dishes": [
-          "Char Kway Teow",
-          "Hokkien Mee: KL version",
-          "Hokkien Mee: Penang version",
-          "Chee Cheong Fun",
-          "Yong Tau Foo"
-        ],
-        "🇮🇳 Indian-Malaysian Dishes": [
-          "Roti Canai",
-          "Nasi Kandar",
-          "Thosai (Dosa)",
-          "Tandoori Chicken"
-        ],
-        "🍢 Street Food & Snacks": [
-          "Apam Balik",
-          "Cendol",
-          "Rojak",
-          "Lok Lok",
-          "Keropok Lekor"
-        ],
-        "🍹 Drinks & Desserts": [
-          "Teh Tarik",
-          "Milo Dinosaur",
-          "ABC (Ais Batu Campur)",
-          "Kuih-muih"
-        ]
-      },
-      "🇲🇾 Top Places to Visit in Malaysia": {
-        "📍 Kuala Lumpur (Capital City)": [
-          "Petronas Twin Towers",
-          "Batu Caves",
-          "Bukit Bintang",
-          "KL Tower",
-          "Thean Hou Temple"
-        ],
-        "📍 Penang": [
-          "George Town",
-          "Kek Lok Si Temple",
-          "Penang Hill",
-          "Penang Street Food"
-        ],
-        "📍 Langkawi (Island Paradise)": [
-          "Langkawi Sky Bridge",
-          "Pantai Cenang",
-          "Island hopping tours",
-          "Mangrove tours"
-        ],
-        "📍 Cameron Highlands (Cool Climate)": [
-          "BOH Tea Plantations",
-          "Strawberry farms",
-          "Mossy Forest"
-        ],
-        "📍 Melaka (Historical City)": [
-          "Dutch Square",
-          "St. Paul’s Hill & Church",
-          "Jonker Street",
-          "Melaka River Cruise"
-        ],
-        "📍 Taman Negara (Oldest Rainforest)": [
-          "Canopy Walkway",
-          "Night jungle walks",
-          "Orang Asli village"
-        ],
-        "📍 Sabah (Borneo)": [
-          "Mount Kinabalu",
-          "Kota Kinabalu",
-          "Sipadan Island",
-          "Kinabatangan River"
-        ],
-        "📍 Sarawak (Borneo)": [
-          "Kuching",
-          "Bako National Park",
-          "Semenggoh Wildlife Centre"
-        ],
-        "🏝️ Off-the-Beaten-Path Islands": [
-          "Perhentian Islands",
-          "Tioman Island",
-          "Redang Island"
-        ]
-      }
-    };
+  <script>
+    function toggleSection(header) {
+      const section = header.parentElement;
+      const content = header.nextElementSibling;
+      const icon = header.querySelector('.toggle-icon');
+      const open = section.classList.toggle('open');
+      content.style.display = open ? 'block' : 'none';
+      icon.textContent = open ? '▼' : '▶';
+    }
 
-    function renderChecklist(state = {}) {
-      checklistContainer.innerHTML = '';
-      Object.entries(checklistData).forEach(([section, subsections]) => {
-        const sectionDiv = document.createElement('section');
-        const sectionHeader = document.createElement('h2');
-        sectionHeader.textContent = section;
-        sectionDiv.appendChild(sectionHeader);
+    function updateChart() {
+      const boxes = document.querySelectorAll('input[type="checkbox"]');
+      const total = boxes.length;
+      const done = Array.from(boxes).filter(cb => cb.checked).length;
+      const data = {
+        labels: ['Done', 'Remaining'],
+        datasets: [{
+          data: [done, total - done],
+          backgroundColor: ['#2e7d32', '#cccccc']
+        }]
+      };
+      const cfg = {
+        type: 'pie',
+        data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: {
+              display: true,
+              text: `Checklist Progress: ${((done / total) * 100).toFixed(1)}%`
+            }
+          }
+        }
+      };
+      const ctx = document.getElementById('progressChart');
+      if (window.progressChart) window.progressChart.destroy();
+      window.progressChart = new Chart(ctx, cfg);
+    }
 
-        Object.entries(subsections).forEach(([sub, items]) => {
-          const subDiv = document.createElement('div');
-          const subHeader = document.createElement('h3');
-          subHeader.textContent = sub;
-          subDiv.classList.add('subsection');
-          subDiv.appendChild(subHeader);
+    function updateCustomChart() {
+      const f = document.querySelectorAll('#customFoodList li').length;
+      const p = document.querySelectorAll('#customPlaceList li').length;
+      const data = {
+        labels: ['Food Added', 'Places Added'],
+        datasets: [{
+          data: [f, p],
+          backgroundColor: ['#3498db', '#9b59b6']
+        }]
+      };
+      const cfg = {
+        type: 'pie',
+        data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: 'Custom Entries' }
+          }
+        }
+      };
+      const ctx2 = document.getElementById('customChart');
+      if (window.customChart) window.customChart.destroy();
+      window.customChart = new Chart(ctx2, cfg);
+    }
 
-          items.forEach(item => {
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `${section}-${sub}-${item}`;
-            checkbox.checked = !!state[checkbox.id];
-            checkbox.addEventListener('change', () => {
-              update(ref(db, `users/${userId}/checklist`), {
-                [checkbox.id]: checkbox.checked
-              });
-            });
-
-            const label = document.createElement('label');
-            label.appendChild(checkbox);
-            label.append(` ${item}`);
-            subDiv.appendChild(label);
-          });
-
-          sectionDiv.appendChild(subDiv);
-        });
-
-        checklistContainer.appendChild(sectionDiv);
+    function attachCheckboxListener(cb) {
+      cb.addEventListener('change', () => {
+        saveChecklist();
+        updateChart();
+        updateCustomChart();
       });
     }
 
-    // Fetch saved checklist state
-    const userRef = ref(db, `users/${userId}/checklist`);
-    onValue(userRef, (snapshot) => {
-      const data = snapshot.val() || {};
-      renderChecklist(data);
+    function addCustomFood() {
+      const val = document.getElementById('customFoodInput').value.trim();
+      if (!val) return;
+      const ul = document.getElementById('customFoodList');
+      const li = document.createElement('li');
+      li.innerHTML = `<input type="checkbox"> ${val}`;
+      ul.appendChild(li);
+      attachCheckboxListener(li.querySelector('input'));
+      document.getElementById('customFoodInput').value = '';
+      saveChecklist();
+      updateChart();
+      updateCustomChart();
+    }
+
+    function addCustomPlace() {
+      const val = document.getElementById('customPlaceInput').value.trim();
+      if (!val) return;
+      const ul = document.getElementById('customPlaceList');
+      const li = document.createElement('li');
+      li.innerHTML = `<input type="checkbox"> ${val}`;
+      ul.appendChild(li);
+      attachCheckboxListener(li.querySelector('input'));
+      document.getElementById('customPlaceInput').value = '';
+      saveChecklist();
+      updateChart();
+      updateCustomChart();
+    }
+
+    function saveChecklist() {
+      const states = Array.from(document.querySelectorAll('input[type="checkbox"]'))
+                          .map(cb => cb.checked);
+      localStorage.setItem('malaysiaChecklist', JSON.stringify(states));
+    }
+
+    function loadChecklist() {
+      const saved = JSON.parse(localStorage.getItem('malaysiaChecklist') || '[]');
+      document.querySelectorAll('input[type="checkbox"]').forEach((cb,i) => {
+        cb.checked = !!saved[i];
+      });
+    }
+
+    function resetChecklist() {
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      localStorage.removeItem('malaysiaChecklist');
+      updateChart();
+      updateCustomChart();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Make sure all checkboxes trigger updates
+      document.querySelectorAll('input[type="checkbox"]')
+              .forEach(cb => attachCheckboxListener(cb));
+      loadChecklist();
+      updateChart();
+      updateCustomChart();
     });
   </script>
 </body>
