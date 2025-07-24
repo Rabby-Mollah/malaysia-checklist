@@ -4,12 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kabbo's Malaysia Travel Checklist</title>
-  <!-- Use a specific Chart.js version for stability -->
+  <!-- Pin a stable Chart.js release -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       font-family: 'Segoe UI', Tahoma, sans-serif;
       background: #f0f2f5;
       color: #333;
@@ -32,78 +31,50 @@
       margin: 0 0 24px;
     }
     .section, .sub-section {
-      margin-bottom: 20px;
-      background: #fff;
-      border-radius: 6px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 20px; background: #fff;
+      border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       overflow: hidden;
     }
     .section-header, .sub-section-header {
-      padding: 12px 16px;
-      font-weight: 600;
-      cursor: pointer;
-      border-bottom: 1px solid #e1e4e8;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 12px 16px; font-weight: 600;
+      cursor: pointer; border-bottom: 1px solid #e1e4e8;
+      display: flex; justify-content: space-between; align-items: center;
       background: #f7f7f7;
     }
     .section-content, .sub-section-content {
-      padding: 12px 16px;
-      display: none;
+      padding: 12px 16px; display: none;
     }
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+    ul { list-style: none; padding: 0; margin: 0; }
     li {
       background: #fafafa;
       padding: 10px 12px;
       margin-bottom: 8px;
       border-radius: 4px;
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
     }
     li input[type="checkbox"] {
-      margin-right: 12px;
-      transform: scale(1.1);
+      margin-right: 12px; transform: scale(1.1);
     }
     .chart-container {
-      width: 100%;
-      margin: 24px auto;
-      text-align: center;
+      width: 100%; margin: 24px auto; text-align: center;
     }
     .chart-container canvas {
-      max-width: 100%;
-      height: 300px; /* ensure visible height */
+      width: 100%; height: 300px;
     }
     button {
-      padding: 8px 14px;
-      font-size: 14px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      padding: 8px 14px; font-size: 14px;
+      border: none; border-radius: 4px; cursor: pointer;
       margin-top: 8px;
     }
-    .add-btn {
-      background-color: #3498db;
-      color: #fff;
-    }
+    .add-btn { background-color: #3498db; color: #fff; }
     .btn-reset {
-      background-color: #e74c3c;
-      color: #fff;
-      margin: 16px auto;
-      display: block;
+      background-color: #e74c3c; color: #fff;
+      margin: 16px auto; display: block;
     }
-    button:hover {
-      opacity: 0.9;
-    }
+    button:hover { opacity: 0.9; }
     .footer {
-      text-align: center;
-      margin-top: 32px;
-      font-size: 14px;
-      color: #777;
+      text-align: center; margin-top: 32px;
+      font-size: 14px; color: #777;
     }
     @media (max-width: 600px) {
       .container { margin: 20px 10px; }
@@ -138,6 +109,7 @@
             </ul>
           </div>
         </div>
+
         <!-- Chinese Dishes -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
@@ -153,6 +125,7 @@
             </ul>
           </div>
         </div>
+
         <!-- Indian Dishes -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
@@ -168,6 +141,7 @@
             </ul>
           </div>
         </div>
+
         <!-- Street Food -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
@@ -183,6 +157,7 @@
             </ul>
           </div>
         </div>
+
         <!-- Drinks & Desserts -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
@@ -197,6 +172,7 @@
             </ul>
           </div>
         </div>
+
         <!-- Custom Foods -->
         <div class="sub-section">
           <div class="sub-section-header" onclick="toggleSection(this)">
@@ -358,7 +334,7 @@
     <!-- Charts -->
     <div class="chart-container">
       <canvas id="progressChart"></canvas>
-    </div>  
+    </div>
     <div class="chart-container">
       <canvas id="customChart"></canvas>
     </div>
@@ -369,10 +345,10 @@
 
   <script>
     function toggleSection(header) {
-      const section = header.parentElement;
+      const parent = header.parentElement;
       const content = header.nextElementSibling;
       const icon = header.querySelector('.toggle-icon');
-      const open = section.classList.toggle('open');
+      const open = parent.classList.toggle('open');
       content.style.display = open ? 'block' : 'none';
       icon.textContent = open ? '▼' : '▶';
     }
@@ -490,9 +466,10 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Make sure all checkboxes trigger updates
+      // wire up existing checkboxes
       document.querySelectorAll('input[type="checkbox"]')
               .forEach(cb => attachCheckboxListener(cb));
+      // load saved state, then draw
       loadChecklist();
       updateChart();
       updateCustomChart();
