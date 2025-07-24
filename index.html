@@ -26,7 +26,31 @@
       border-radius: 6px;
       font-size: 26px;
       text-align: center;
-      margin: 0 0 24px;
+      margin: 0 0 16px;
+    }
+    /* Summary bars */
+    .summary {
+      margin-bottom: 24px;
+    }
+    .progress-container {
+      margin-bottom: 12px;
+    }
+    .progress-label {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .progress-bar {
+      width: 100%;
+      background: #e1e4e8;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 12px;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #2e7d32;
+      transition: width 0.3s ease;
     }
     .section {
       margin-bottom: 20px;
@@ -136,6 +160,18 @@
 <body>
   <div class="container">
     <h2>Kabbo's Malaysia Travel Checklist</h2>
+
+    <!-- Overall Progress Summary -->
+    <div class="summary">
+      <div class="progress-container">
+        <div class="progress-label">Food Progress: <span id="foodPercent">0%</span></div>
+        <div class="progress-bar"><div id="foodFill" class="progress-fill"></div></div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-label">Places Progress: <span id="placePercent">0%</span></div>
+        <div class="progress-bar"><div id="placeFill" class="progress-fill"></div></div>
+      </div>
+    </div>
 
     <!-- Food Section -->
     <div class="section food" data-section="food">
@@ -398,7 +434,7 @@
     function saveSectionColors() {
       const colors = {};
       document.querySelectorAll('.section').forEach(sec => {
-        const name = sec.dataset.section;
+        const name = sec.dataset-section;
         const picker = sec.querySelector('.color-picker');
         colors[name] = picker.value;
       });
@@ -407,15 +443,13 @@
     function loadSectionColors() {
       const stored = JSON.parse(localStorage.getItem('sectionColors') || '{}');
       document.querySelectorAll('.section').forEach(sec => {
-        const name = sec.dataset.section;
+        const name = sec.dataset-section;
         const picker = sec.querySelector('.color-picker');
         const col = stored[name] || '#3498db';
         picker.value = col;
         sec.style.setProperty('--section-color', col);
       });
     }
-
-    // attach color pickers
     function attachColorPickers() {
       document.querySelectorAll('.color-picker').forEach(picker => {
         picker.addEventListener('input', () => {
@@ -426,9 +460,28 @@
       });
     }
 
+    // update summary bars
+    function updateSummary() {
+      // Food
+      const foodBoxes = document.querySelectorAll('.section.food input[type="checkbox"]');
+      const foodChecked = Array.from(foodBoxes).filter(cb => cb.checked).length;
+      const foodPct = foodBoxes.length ? Math.round(foodChecked / foodBoxes.length * 100) : 0;
+      document.getElementById('foodFill').style.width = foodPct + '%';
+      document.getElementById('foodPercent').textContent = foodPct + '%';
+      // Places
+      const placeBoxes = document.querySelectorAll('.section.place input[type="checkbox"]');
+      const placeChecked = Array.from(placeBoxes).filter(cb => cb.checked).length;
+      const placePct = placeBoxes.length ? Math.round(placeChecked / placeBoxes.length * 100) : 0;
+      document.getElementById('placeFill').style.width = placePct + '%';
+      document.getElementById('placePercent').textContent = placePct + '%';
+    }
+
     // checkbox & custom-item logic
     function attachCheckboxListener(cb) {
-      cb.addEventListener('change', saveChecklist);
+      cb.addEventListener('change', () => {
+        saveChecklist();
+        updateSummary();
+      });
     }
     function addCustomFood() {
       const v = document.getElementById('customFoodInput').value.trim();
@@ -437,9 +490,11 @@
       const li = document.createElement('li');
       li.innerHTML = `<input type="checkbox"> ${v}`;
       ul.appendChild(li);
-      attachCheckboxListener(li.querySelector('input'));
+      const cb = li.querySelector('input');
+      attachCheckboxListener(cb);
       document.getElementById('customFoodInput').value = '';
       saveChecklist();
+      updateSummary();
     }
     function addCustomPlace() {
       const v = document.getElementById('customPlaceInput').value.trim();
@@ -448,9 +503,11 @@
       const li = document.createElement('li');
       li.innerHTML = `<input type="checkbox"> ${v}`;
       ul.appendChild(li);
-      attachCheckboxListener(li.querySelector('input'));
+      const cb = li.querySelector('input');
+      attachCheckboxListener(cb);
       document.getElementById('customPlaceInput').value = '';
       saveChecklist();
+      updateSummary();
     }
 
     // save/load checklist state
@@ -468,6 +525,7 @@
     function resetChecklist() {
       document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
       localStorage.removeItem('malaysiaChecklist');
+      updateSummary();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -475,6 +533,7 @@
       loadSectionColors();
       document.querySelectorAll('input[type="checkbox"]').forEach(cb => attachCheckboxListener(cb));
       attachColorPickers();
+      updateSummary();
     });
   </script>
 </body>
